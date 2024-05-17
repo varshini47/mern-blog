@@ -1,6 +1,7 @@
 import { Alert, Button, Label, Spinner, TextInput } from 'flowbite-react'
 import React, { useState } from 'react'
 import { Link ,useNavigate} from 'react-router-dom'
+import OAuth from '../components/OAuth';
 export default function SignUp() {
   const [formData,setFormData]=useState({});
   const [errorMessage,setErrorMessage]=useState(null);
@@ -8,7 +9,10 @@ export default function SignUp() {
   const navigate=useNavigate();
   const handleChange=(e)=>{
     setFormData({...formData,[e.target.id]:e.target.value.trim()});
-  }
+  }   
+
+
+  
   const handleSubmit=async (e)=>{
     e.preventDefault();//form after submitting the page gets refreshed this is used to prevent that thing
     if(!formData.username||!formData.email||!formData.password)
@@ -71,6 +75,7 @@ export default function SignUp() {
     </div>):('Sign up')
 }
   </Button>
+  <OAuth/>
 </form>
 <div className='flex gap-2 text-sm mt-5'>
 <span>Already have an account?</span>

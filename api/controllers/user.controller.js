@@ -15,8 +15,10 @@ export const updateUser= async(req,res,next)=>{
     }
     req.body.password=bcryptjs.hashSync(req.body.password,10);
    }
+   
    if(req.body.username)
     {
+        
         if(req.body.username.length <7 || req.body.username.length>20 )
             {
                 return next(errorHandler(400,'Username must be between 7 and 20 characters'));
@@ -32,6 +34,7 @@ export const updateUser= async(req,res,next)=>{
             {
                 return next(errorHandler(400,'Username can only contain letters and numbers'));
             }
+        }
         try{
             const updatedUser=await User.findByIdAndUpdate(req.params.userId,{
                 $set:{
@@ -47,6 +50,6 @@ export const updateUser= async(req,res,next)=>{
         {
             next(error)
         }
-    }
+    
 
 };

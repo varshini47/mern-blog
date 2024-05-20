@@ -7,10 +7,11 @@ import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import { updateStart,updateSuccess,updateFailure,deleteUserStart,deleteUserSuccess,deleteUserFailure,signoutSuccess } from '../redux/user/userSlice';
 import { useDispatch } from 'react-redux';
+import {Link} from 'react-router-dom';
 import { updateUser } from '../../../api/controllers/user.controller';
 import {HiArrowNarrowUp, HiOutlineExclamationCircle} from 'react-icons/hi'
 export default function DashProfile() {
-  const {currentUser,error}=useSelector((state)=>state.user)
+  const {currentUser,error,loading}=useSelector((state)=>state.user)
   const [imageFile,setImageFile ]=useState(null);
   const [imageFileUrl,setImageFileUrl]=useState(null);
   const [imageFileUploadProgress,setImageFileUploadProgress]=useState(null);
@@ -182,9 +183,17 @@ setUpdateUserSuccess("User's profile updated succesfully");
       <TextInput type='text' id='username' placeholder='username' defaultValue={currentUser.username}  onChange={handleChange}/>
       <TextInput type='text' id='email' placeholder='email' defaultValue={currentUser.email} onChange={handleChange}/>
       <TextInput type='text' id='password' placeholder='password' onChange={handleChange}/>
-      <Button type='submit' gradientDuoTone='purpleToBlue' outline>
-        Update
+      <Button type='submit' gradientDuoTone='purpleToBlue' outline disabled={imageFileUploading || loading}>
+       {loading?'Loading...':'Update'} 
       </Button>
+      {
+        currentUser.isAdmin && (
+          
+          <Link to={'/create-post'}>
+          <Button type='button' gradientDuoTone='purpleToPink' className='w-full'>Create a post</Button>
+          </Link>
+        )
+      }
       </form>
       <div className='text-red-500 flex justify-between mt-5'>
         <span onClick={()=>setshowModal(true)} className='cursor-pointer'>Delete Account</span>

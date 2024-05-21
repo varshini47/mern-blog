@@ -25,3 +25,37 @@ export const create=async(req,res,next)=>
             next(error);
         }
     };
+
+export const getposts=async(req,res,next)=>{
+    try{
+         const startIndex=parseInt(req.query.startIndex)||0;
+         const limit=parseInt(req.query.limit)||9;
+         const sortDirection=req.query.order === 'asc' ?1 : -1;
+         const posts =await Post.find({
+            ...(req.query.userId && {userId:req.query.userId}),
+            ...(req.query.category && {categoty:req.query.category}),
+            ...(req.query.slug && {category:req.query.slug}),
+            ...(req.query.postId && {_id:req.query.postId}),
+            ...(req.query.searchTerm && {
+                $or :[     /* $or is used if we need to search based on 2 or more things*/ 
+                    {title :{$regex : req.query.searchTerm , $options : 'i'}}, /* regex is a powerful tool in mongodb used for searching and options i means both lowercase and uppercase are considered same*/ 
+                    {content :{ $regex : req.query.searchTerm,$options:'i'}},
+                ],
+            }),
+        }).sort({updatedAt:sortDirection}).skip(startIndex).limit(limit);
+        const totalPosts=await Post.countDocuments();
+        const now=new Date();
+        const oneMonthAgo =new Date(now.getFullYear(),now.getMonth()-1,now.getDate());
+        const lastMonthPosts =await Post.countDocuments({
+            createdAt :{$gte : oneMonthAgo},
+        });
+        res.status(200).json({
+            posts,
+            totalPosts,
+            lastMonthPosts,
+        });
+    }catch(error)
+    {
+        next(error);
+    }
+}

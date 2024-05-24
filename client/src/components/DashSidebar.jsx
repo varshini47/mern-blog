@@ -1,6 +1,6 @@
 import { Sidebar } from 'flowbite-react'
 import React from 'react'
-import {HiArrowSmRight, HiDocumentText, HiOutlineUserGroup, HiUser} from 'react-icons/hi'
+import {HiAnnotation, HiArrowSmRight, HiDocumentText, HiOutlineUserGroup, HiUser} from 'react-icons/hi'
 import { useEffect,useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Link } from 'react-router-dom';
@@ -52,9 +52,19 @@ export default function DashSidebar() {
           <Sidebar.Item active={tab==='posts'} icon={HiDocumentText} as='div' >Posts</Sidebar.Item> {/*as div is used because of sidebar an anchor tag is there and in link one anchor tag is there which is causing an error*/}
         </Link>}
         {currentUser.isAdmin && 
+        <>
           <Link to='/dashboard?tab=users'>
           <Sidebar.Item active={tab==='users'} icon={HiOutlineUserGroup} as='div' >Users</Sidebar.Item> {/*as div is used because of sidebar an anchor tag is there and in link one anchor tag is there which is causing an error*/}
-        </Link>}
+        </Link>
+        <Link to='/dashboard?tab=comments'>
+          <Sidebar.Item active={tab==='comments'} icon={HiAnnotation} as='div' >Comments</Sidebar.Item> {/*as div is used because of sidebar an anchor tag is there and in link one anchor tag is there which is causing an error*/}
+        </Link>
+        </>
+        
+        }
+
+    
+
         
             <Sidebar.Item icon={HiArrowSmRight} className='cursor-pointer' onClick={handleSignout}>
               Sign Out

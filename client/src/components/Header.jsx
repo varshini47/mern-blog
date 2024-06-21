@@ -27,10 +27,12 @@ export default function Header() {
 
     const handleSignout=async()=>{
       try{
-        const res= await fetch('api/user/signout',{
+        //console.log('ji');
+        const res= await fetch('/api/user/signout',{
           method:'POST',
         });
         const data=await res.json();
+        //console.log(data);
         if(!res.ok)
           {
             console.log(data.message);
@@ -65,6 +67,7 @@ export default function Header() {
     value={searchTerm}
     onChange={(e)=>setSearchTerm(e.target.value)}
     />
+
     </form>
     <Button className='w-12 h-10 lg:hidden' color='gray' pill>
     <AiOutlineSearch/>

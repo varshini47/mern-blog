@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import PostCard from '../components/PostCard';
+
 export default function Search() {
     const [sidebarData,setSidebarData]=useState({
         searchTerm:'',
@@ -14,7 +15,7 @@ export default function Search() {
     const [showMore,setShowMore]=useState(false);
     const location=useLocation();
     const navigate=useNavigate();
-    console.log(sidebarData);
+ //   console.log(sidebarData);
    useEffect(()=>{
     const urlParams=new URLSearchParams(location.search);
     const searchTermFromUrl=urlParams.get('searchTerm');
@@ -22,7 +23,8 @@ export default function Search() {
     const categoryFromUrl=urlParams.get('category');
     if(searchTermFromUrl||sortFromUrl||categoryFromUrl)
         {
-            setSidebarData({...sidebarData,
+            setSidebarData({
+                ...sidebarData,
                 searchTerm:searchTermFromUrl,
                 sort:sortFromUrl,
                 category:categoryFromUrl,
@@ -31,6 +33,7 @@ export default function Search() {
         const fetchPosts=async()=>{
             setLoading(true);
             const searchQuery=urlParams.toString();
+           console.log(searchQuery);
             const res=await fetch(`/api/post/getPosts?${searchQuery}`);
             if(!res.ok)
                 {
@@ -40,6 +43,7 @@ export default function Search() {
             if(res.ok)
                 {
                     const data=await res.json();
+                    console.log(data);
                     setPosts(data.posts);
                     setLoading(false);
                     if(data.posts.length===9)
@@ -67,7 +71,7 @@ export default function Search() {
         if(e.target.id==='category')
             {
                 const category=e.target.value||'uncategorized';
-                setSidebarData({...sidebarData,category});
+                setSidebarData({...sidebarData,category:category});
             }
     };
 

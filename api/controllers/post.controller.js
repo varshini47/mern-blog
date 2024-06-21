@@ -28,12 +28,15 @@ export const create=async(req,res,next)=>
 
 export const getposts=async(req,res,next)=>{
     try{
+      //  console.log(req);
          const startIndex=parseInt(req.query.startIndex)||0;
          const limit=parseInt(req.query.limit)||9;
-         const sortDirection=req.query.order === 'asc' ?1 : -1;
+        // console.log(req.query.sort);
+         const sortDirection=req.query.sort === 'asc' ?1 : -1;
+        // console.log(sortDirection);
          const posts =await Post.find({
             ...(req.query.userId && {userId:req.query.userId}),
-            ...(req.query.category && {categoty:req.query.category}),
+            ...(req.query.category && req.query.category!=='uncategorized'&& {category: req.query.category}),
             ...(req.query.slug && {slug:req.query.slug}),
             ...(req.query.postId && {_id:req.query.postId}),
             ...(req.query.searchTerm && {
@@ -43,6 +46,7 @@ export const getposts=async(req,res,next)=>{
                 ],
             }),
         }).sort({updatedAt:sortDirection}).skip(startIndex).limit(limit);
+        //console.log(posts);
         const totalPosts=await Post.countDocuments();
         const now=new Date();
         const oneMonthAgo =new Date(now.getFullYear(),now.getMonth()-1,now.getDate());

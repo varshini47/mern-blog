@@ -33,7 +33,7 @@ export default function Search() {
         const fetchPosts=async()=>{
             setLoading(true);
             const searchQuery=urlParams.toString();
-           console.log(searchQuery);
+          // console.log(searchQuery);
             const res=await fetch(`/api/post/getPosts?${searchQuery}`);
             if(!res.ok)
                 {
@@ -43,7 +43,7 @@ export default function Search() {
             if(res.ok)
                 {
                     const data=await res.json();
-                    console.log(data);
+                   // console.log(data);
                     setPosts(data.posts);
                     setLoading(false);
                     if(data.posts.length===9)

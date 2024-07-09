@@ -53,12 +53,12 @@ export default function CreatePost() {
       setImageUploadProgress(null);
       console.log(error);
     }
-    console.log('bue');
+    //console.log('bue');
   };
 
   const handleSubmit=async(e)=>{
     e.preventDefault();
-   console.log("submitting");
+   //console.log("submitting");
     try{
       const res=await fetch('/api/post/create',{
         method:'POST',
@@ -68,7 +68,7 @@ export default function CreatePost() {
         body: JSON.stringify(formData),
       });
       const data=await res.json();
-      console.log(res);
+      //console.log(res);
       if(!res.ok)
         {
           setPublishError(data.message);
